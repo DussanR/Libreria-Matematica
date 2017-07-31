@@ -1,0 +1,687 @@
+	org $100
+num0:	fcb 0
+num1:	fcb 0,0,2,2,2,4
+num2:	fcb 0,0,3,3,3,3
+num3:	fcb 0,0,0,0,0,0,0,0,0,0,0,0
+num4:	fcb 0,0,0,0,0,0
+
+	org $2000
+main:
+	ldx #num1
+	pshx
+	ldx #num2
+	pshx
+	ldx #num3
+	pshx
+	des
+	jsr multiplicar
+	pula
+	ins
+	ins
+	ins
+	ins
+	ins
+	ins
+
+multiplicarfin:
+
+	swi
+
+multiplicar:
+	psha
+	pshb
+	pshx
+	pshy
+	tsx
+
+	clr 8,x
+	ldy 13,x
+	pshy
+	ldy 11,x
+	ldaa 5,y
+	psha
+	ldy 9,x
+	pshy
+	jsr submultiplicar5
+	ins
+	ins
+	ins
+	ins
+	ins
+
+	ldy 13,x
+	pshy
+	ldy 11,x
+	ldaa 4,y
+	psha
+	ldy 9,x
+	pshy
+	jsr submultiplicar4
+	ins
+	ins
+	ins
+	ins
+	ins
+
+	ldy 13,x
+	pshy
+	ldy 11,x
+	ldaa 3,y
+	psha
+	ldy 9,x
+	pshy
+	jsr submultiplicar3
+	ins
+	ins
+	ins
+	ins
+	ins
+
+	ldy 9,x
+	ldaa 3,y
+	cmpa #0
+	beq seguir
+	jmp fin
+seguir:
+
+	ldy 13,x
+	pshy
+	ldy 11,x
+	ldaa 2,y
+	psha
+	ldy 9,x
+	pshy
+	jsr submultiplicar2
+	ins
+	ins
+	ins
+	ins
+	ins
+
+	ldy 9,x
+	ldaa 3,y
+	cmpa #0
+	bne fin
+
+	ldy 13,x
+	pshy
+	ldy 11,x
+	ldaa 1,y
+	psha
+	ldy 9,x
+	pshy
+	jsr submultiplicar1
+	ins
+	ins
+	ins
+	ins
+	ins
+
+	ldy 9,x
+	ldaa 3,y
+	cmpa #0
+	bne fin
+
+	ldy 13,x
+	pshy
+	ldy 11,x
+	ldaa 0,y
+	psha
+	ldy 9,x
+	pshy
+	jsr submultiplicar0
+	ins
+	ins
+	ins
+	ins
+	ins
+
+	ldy 9,x
+	ldaa 3,y
+	cmpa #0
+	bne fin
+
+	pshx
+	ldy #num3
+	ldaa 10,y
+	cmpa #128
+	bgt subout
+	inc 9,y
+
+subout:
+	ldx #num4
+	ldaa 9,y
+	staa 5,x
+	ldaa 8,y
+	staa 4,x
+	ldaa 7,y
+	staa 3,x
+	ldaa 6,y
+	staa 2,x
+	ldaa 5,y
+	staa 1,x
+	ldaa 4,y
+	staa 0,x
+	pulx
+
+	puly
+	pulx
+	pulb
+	pula
+	rts
+
+fin:
+	inc 8,x
+	ldaa #1
+	staa num0
+	jmp multiplicarfin
+
+submultiplicar5:
+	psha
+	pshb
+	pshx
+	pshy
+	tsx
+
+	ldy 11,x
+	ldaa 5,y
+	ldab 10,x
+	mul
+	ldy 8,x
+
+	addb 11,y	;1
+	stab 11,y
+	adda 10,y
+	staa 10,y	;1
+
+	ldab 10,x
+	ldy 11,x
+	ldaa 4,y
+	mul
+	ldy 8,x
+	addb 10,y	;2
+	bcc mult51
+	inca
+mult51:
+	stab 10,y
+	adda 9,y
+	staa 9,y	;2
+	ldy 11,x
+	ldaa 3,y
+	ldab 10,x
+	mul
+	ldy 8,x
+	addb 9,y	;3
+	bcc mult52
+	inca
+mult52:
+	stab 9,y
+	adda 8,y
+	staa 8,y	;3
+	ldy 11,x
+	ldaa 2,y
+	ldab 10,x
+	mul
+	ldy 8,x
+	addb 8,y	;4
+	bcc mult53
+	inca
+mult53:
+	stab 8,y
+	adda 7,y
+	staa 7,y	;4
+	ldy 11,x
+	ldaa 1,y
+	ldab 10,x
+	mul
+	ldy 8,x
+	addb 7,y	;5
+	bcc mult54
+	inca
+mult54:
+	stab 7,y
+	adda 6,y
+	staa 6,y	;5
+	ldy 11,x
+	ldaa 0,y
+	ldab 10,x
+	mul
+	ldy 8,x
+	addb 6,y	;6
+	bcc mult55
+	inca
+mult55:
+	stab 6,y
+	adda 5,y
+	staa 5,y	;6
+
+	puly
+	pulx
+	pulb
+	pula
+	rts
+
+submultiplicar4:
+	psha
+	pshb
+	pshx
+	pshy
+	tsx
+
+	ldy 11,x
+	ldaa 5,y
+	ldab 10,x
+	mul
+	ldy 8,x
+
+	addb 10,y	;1
+	stab 10,y
+	adda 9,y
+	staa 9,y	;1
+
+	ldab 10,x
+	ldy 11,x
+	ldaa 4,y
+	mul
+	ldy 8,x
+	addb 9,y	;2
+	bcc mult41
+	inca
+mult41:
+	stab 9,y
+	adda 8,y
+	staa 8,y	;2
+	ldy 11,x
+	ldaa 3,y
+	ldab 10,x
+	mul
+	ldy 8,x
+	addb 8,y	;3
+	bcc mult42
+	inca
+mult42:
+	stab 8,y
+	adda 7,y
+	staa 7,y	;3
+	ldy 11,x
+	ldaa 2,y
+	ldab 10,x
+	mul
+	ldy 8,x
+	addb 7,y	;4
+	bcc mult43
+	inca
+mult43:
+	stab 7,y
+	adda 6,y
+	staa 6,y	;4
+	ldy 11,x
+	ldaa 1,y
+	ldab 10,x
+	mul
+	ldy 8,x
+	addb 6,y	;5
+	bcc mult44
+	inca
+mult44:
+	stab 6,y
+	adda 5,y
+	staa 5,y	;5
+	ldy 11,x
+	ldaa 0,y
+	ldab 10,x
+	mul
+	ldy 8,x
+	addb 5,y	;6
+	bcc mult45
+	inca
+mult45:
+	stab 5,y
+	adda 4,y
+	staa 4,y	;6
+
+	puly
+	pulx
+	pulb
+	pula
+	rts
+
+submultiplicar3:
+	psha
+	pshb
+	pshx
+	pshy
+	tsx
+
+	ldy 11,x
+	ldaa 5,y
+	ldab 10,x
+	mul
+	ldy 8,x
+
+	addb 9,y	;1
+	stab 9,y
+	adda 8,y
+	staa 8,y	;1
+
+	ldab 10,x
+	ldy 11,x
+	ldaa 4,y
+	mul
+	ldy 8,x
+	addb 8,y	;2
+	bcc mult31
+	inca
+mult31:
+	stab 8,y
+	adda 7,y
+	staa 7,y	;2
+	ldy 11,x
+	ldaa 3,y
+	ldab 10,x
+	mul
+	ldy 8,x
+	addb 7,y	;3
+	bcc mult32
+	inca
+mult32:
+	stab 7,y
+	adda 6,y
+	staa 6,y	;3
+	ldy 11,x
+	ldaa 2,y
+	ldab 10,x
+	mul
+	ldy 8,x
+	addb 6,y	;4
+	bcc mult33
+	inca
+mult33:
+	stab 6,y
+	adda 5,y
+	staa 5,y	;4
+	ldy 11,x
+	ldaa 1,y
+	ldab 10,x
+	mul
+	ldy 8,x
+	addb 5,y	;5
+	bcc mult34
+	inca
+mult34:
+	stab 5,y
+	adda 4,y
+	staa 4,y	;5
+	ldy 11,x
+	ldaa 0,y
+	ldab 10,x
+	mul
+	ldy 8,x
+	addb 4,y	;6
+	bcc mult35
+	inca
+mult35:
+	stab 4,y
+	adda 3,y
+	staa 3,y	;6
+
+	puly
+	pulx
+	pulb
+	pula
+	rts
+
+submultiplicar2:
+	psha
+	pshb
+	pshx
+	pshy
+	tsx
+
+	ldy 11,x
+	ldaa 5,y
+	ldab 10,x
+	mul
+	ldy 8,x
+
+	addb 8,y	;1
+	stab 8,y
+	adda 7,y
+	staa 7,y	;1
+
+	ldab 10,x
+	ldy 11,x
+	ldaa 4,y
+	mul
+	ldy 8,x
+	addb 7,y	;2
+	bcc mult21
+	inca
+mult21:
+	stab 7,y
+	adda 6,y
+	staa 6,y	;2
+	ldy 11,x
+	ldaa 3,y
+	ldab 10,x
+	mul
+	ldy 8,x
+	addb 6,y	;3
+	bcc mult22
+	inca
+mult22:
+	stab 6,y
+	adda 5,y
+	staa 5,y	;3
+	ldy 11,x
+	ldaa 2,y
+	ldab 10,x
+	mul
+	ldy 8,x
+	addb 5,y	;4
+	bcc mult23
+	inca
+mult23:
+	stab 5,y
+	adda 4,y
+	staa 4,y	;4
+	ldy 11,x
+	ldaa 1,y
+	ldab 10,x
+	mul
+	ldy 8,x
+	addb 4,y	;5
+	bcc mult24
+	inca
+mult24:
+	stab 4,y
+	adda 3,y
+	staa 3,y	;5
+	ldy 11,x
+	ldaa 0,y
+	ldab 10,x
+	mul
+	ldy 8,x
+	addb 3,y	;6
+	bcc mult25
+	inca
+mult25:
+	stab 3,y
+	adda 2,y
+	staa 2,y	;6
+
+	puly
+	pulx
+	pulb
+	pula
+	rts
+
+submultiplicar1:
+	psha
+	pshb
+	pshx
+	pshy
+	tsx
+
+	ldy 11,x
+	ldaa 5,y
+	ldab 10,x
+	mul
+	ldy 8,x
+
+	addb 7,y	;1
+	stab 7,y
+	adda 6,y
+	staa 6,y	;1
+
+	ldab 10,x
+	ldy 11,x
+	ldaa 4,y
+	mul
+	ldy 8,x
+	addb 6,y	;2
+	bcc mult11
+	inca
+mult11:
+	stab 6,y
+	adda 5,y
+	staa 5,y	;2
+	ldy 11,x
+	ldaa 3,y
+	ldab 10,x
+	mul
+	ldy 8,x
+	addb 5,y	;3
+	bcc mult12
+	inca
+mult12:
+	stab 5,y
+	adda 4,y
+	staa 4,y	;3
+	ldy 11,x
+	ldaa 2,y
+	ldab 10,x
+	mul
+	ldy 8,x
+	addb 4,y	;4
+	bcc mult13
+	inca
+mult13:
+	stab 4,y
+	adda 3,y
+	staa 3,y	;4
+	ldy 11,x
+	ldaa 1,y
+	ldab 10,x
+	mul
+	ldy 8,x
+	addb 3,y	;5
+	bcc mult14
+	inca
+mult14:
+	stab 3,y
+	adda 2,y
+	staa 2,y	;5
+	ldy 11,x
+	ldaa 0,y
+	ldab 10,x
+	mul
+	ldy 8,x
+	addb 2,y	;6
+	bcc mult15
+	inca
+mult15:
+	stab 2,y
+	adda 1,y
+	staa 1,y	;6
+
+	puly
+	pulx
+	pulb
+	pula
+	rts
+
+submultiplicar0:
+	psha
+	pshb
+	pshx
+	pshy
+	tsx
+
+	ldy 11,x
+	ldaa 5,y
+	ldab 10,x
+	mul
+	ldy 8,x
+
+	addb 6,y	;1
+	stab 6,y
+	adda 5,y
+	staa 5,y	;1
+
+	ldab 10,x
+	ldy 11,x
+	ldaa 4,y
+	mul
+	ldy 8,x
+	addb 5,y	;2
+	bcc mult01
+	inca
+mult01:
+	stab 5,y
+	adda 4,y
+	staa 4,y	;2
+	ldy 11,x
+	ldaa 3,y
+	ldab 10,x
+	mul
+	ldy 8,x
+	addb 4,y	;3
+	bcc mult02
+	inca
+mult02:
+	stab 4,y
+	adda 3,y
+	staa 3,y	;3
+	ldy 11,x
+	ldaa 2,y
+	ldab 10,x
+	mul
+	ldy 8,x
+	addb 3,y	;4
+	bcc mult03
+	inca
+mult03:
+	stab 3,y
+	adda 2,y
+	staa 2,y	;4
+	ldy 11,x
+	ldaa 1,y
+	ldab 10,x
+	mul
+	ldy 8,x
+	addb 2,y	;5
+	bcc mult04
+	inca
+mult04:
+	stab 2,y
+	adda 1,y
+	staa 1,y	;5
+	ldy 11,x
+	ldaa 0,y
+	ldab 10,x
+	mul
+	ldy 8,x
+	addb 1,y	;6
+	bcc mult05
+	inca
+mult05:
+	stab 1,y
+	adda 0,y
+	staa 0,y	;6
+
+	puly
+	pulx
+	pulb
+	pula
+	rts

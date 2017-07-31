@@ -1,0 +1,103 @@
+	org $d000
+num1:	fcb 130,34,56,230,234,28
+num2:	fcb 19,94,214,122,81,235
+num3:	fcb 0,0,0,0,0,0
+
+	org $c000
+main:
+	ldx #num1
+	pshx
+	ldx #num2
+	pshx
+	ldx #num3
+	pshx
+	des
+	jsr sumacs
+	pula
+fin:
+	swi
+
+sumacs:	psha
+	pshb
+	pshx
+	pshy
+	des
+	des
+	des
+	des
+	des
+	des
+	tsx
+
+	clr 14,x
+	ldy 19,x
+	ldaa 5,y
+	staa 5,x
+	ldaa 4,y
+	staa 4,x
+	ldaa 3,y
+	staa 3,x
+	ldaa 2,y
+	staa 2,x
+	ldaa 1,y
+	staa 1,x
+	ldaa 0,y
+	staa 0,x
+	
+	ldy 17,x
+	ldaa 5,y
+	adda 5,x
+	staa 5,x
+	ldaa 4,y
+	adca 4,x
+	staa 4,x
+	ldaa 3,y
+	adca 3,x
+	staa 3,x
+	ldaa 2,y
+	adca 2,x
+	staa 2,x
+	ldaa 1,y
+	adca 1,x
+	staa 1,x
+	ldaa 0,y
+	adca 0,x
+	staa 0,x
+
+	ldaa 0,y	; a=signo num2
+	ldy 19,x	; y apunta a num1
+	eora 0,y	; xor entre signos
+	bmi sumacs1	; diferentes salta
+	ldaa 0,y	; a=signo num1
+	eora 0,x	; xor entre signo num1 y resultado
+	bpl sumacs1	; salto 
+	inc 14,x
+	bra sumacsfin
+	
+sumacs1:
+	ldy 15,x
+	ldaa 5,x
+	staa 5,y
+	ldaa 4,x
+	staa 4,y
+	ldaa 3,x
+	staa 3,y
+	ldaa 2,x
+	staa 2,y
+	ldaa 1,x
+	staa 1,y
+	ldaa 0,x
+	staa 0,y
+
+sumacsfin:
+	ins
+	ins
+	ins
+	ins
+	ins
+	ins
+	puly
+	pulx
+	pulb
+	pula
+	rts	

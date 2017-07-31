@@ -1,0 +1,112 @@
+	org $100
+num0:	fcb 0
+num1:	fcb 1,1,1,1,1,1
+num2:	fcb 0,0,0,0,0,0
+
+	org $2000
+main:
+	ldx #num1
+	pshx
+	ldx #num2
+	pshx
+	des
+	jsr negativo
+	pula
+	ins
+	ins
+	ins
+	ins
+fin:
+	swi
+
+negativo:
+	psha
+	pshb
+	pshx
+	pshy
+	des
+	des
+	des
+	des
+	des
+	des
+	tsx
+
+	clr 14,x
+	ldy 17,x
+	ldaa 0,y
+	cmpa #128
+	bne negativook
+	ldaa 1,y
+	bne negativook
+	ldaa 2,y
+	bne negativook
+	ldaa 3,y
+	bne negativook
+	ldaa 4,y
+	bne negativook
+	ldaa 5,y
+	bne negativook
+	inc 14,x
+	bra negativofin
+
+negativook:
+	ldaa 0,y
+	coma
+	staa 0,x
+	ldaa 1,y
+	coma
+	staa 1,x
+	ldaa 2,y
+	coma
+	staa 2,x
+	ldaa 3,y
+	coma
+	staa 3,x
+	ldaa 4,y
+	coma
+	staa 4,x
+	ldaa 5,y
+	coma
+	staa 5,x
+
+	inc 5,x
+	bcs negativo1
+	inc 4,x
+	bcs negativo1
+	inc 3,x
+	bcs negativo1
+	inc 2,x
+	bcs negativo1
+	inc 1,x
+	bcs negativo1
+	inc 0,x
+
+negativo1:
+
+	ldy 15,x
+	ldaa 0,x
+	staa 0,y
+	ldaa 1,x
+	staa 1,y
+	ldaa 2,x
+	staa 2,y
+	ldaa 3,x
+	staa 3,y
+	ldaa 4,x
+	staa 4,y
+	ldaa 5,x
+	staa 5,y
+
+negativofin:
+	ins
+	ins
+	ins
+	ins
+	ins
+	ins
+	puly
+	pulx
+	pulb
+	pula
+	rts
